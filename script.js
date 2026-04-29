@@ -40,7 +40,35 @@ const letterParagraphs = [
 // ── INITIALIZATION
 document.addEventListener('DOMContentLoaded', () => {
   spawnPetals(document.getElementById('lPetals'), 22);
+  initVoiceDuration();
 });
+
+function initVoiceDuration() {
+  const audio = document.getElementById('heart-voice');
+  const durEl = document.getElementById('voiceDuration');
+  if (!audio || !durEl) return;
+
+  audio.addEventListener('loadedmetadata', () => {
+    const mins = Math.floor(audio.duration / 60);
+    const secs = Math.floor(audio.duration % 60);
+    durEl.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    const rem = audio.duration - audio.currentTime;
+    if (rem >= 0) {
+      const mins = Math.floor(rem / 60);
+      const secs = Math.floor(rem % 60);
+      durEl.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+  });
+
+  audio.addEventListener('ended', () => {
+    const mins = Math.floor(audio.duration / 60);
+    const secs = Math.floor(audio.duration % 60);
+    durEl.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+  });
+}
 
 // ── PETALS
 function spawnPetals(container, n) {
