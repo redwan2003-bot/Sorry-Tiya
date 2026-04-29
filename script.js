@@ -312,7 +312,7 @@ function buildApologyHearts() {
       noBtn.style.margin = '0';
 
       // Change label as she tries
-      const labels = ['না 😅', 'না না!', 'ধরো না!', 'পালাই 🏃', 'হ্যাঁ বলো!', 'না পাবে না!'];
+      const labels = ['No 😅', 'No way!', 'Can\'t catch me!', 'Running away 🏃', 'Say yes!', 'Not today!'];
       noBtn.textContent = labels[Math.min(attempts - 1, labels.length - 1)];
 
       // Grow the yes button a little to hint
