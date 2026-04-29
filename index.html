@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
+  <div class="dynamic-bg" id="dynamic-bg"></div>
 
   <!-- LOADER -->
   <div id="loader" role="status" aria-label="Loading memory">
@@ -34,6 +35,15 @@
     <span id="lb-close" onclick="closeLb()" aria-label="Close lightbox">&times;</span>
     <img id="lb-img" src="" alt="Enlarged memory">
   </div>
+  
+  <!-- LETTER POPUP -->
+  <div id="letter-popup" class="letter-popup">
+    <p id="popup-text"></p>
+    <button class="close-popup" onclick="closePopup()">Close ♡</button>
+  </div>
+
+  <!-- CUSTOM CURSOR -->
+  <div id="cursor" class="custom-cursor"></div>
 
   <!-- MAIN -->
   <main id="main">
@@ -67,7 +77,19 @@
       <div class="polaroid-grid" id="polGrid"></div>
     </section>
 
-    <!-- LETTER -->
+    <!-- TIMELINE -->
+    <section id="timeline">
+      <div class="sec-center reveal" id="timeHd">
+        <span class="sec-label">✦ Our Journey ✦</span>
+        <h2 class="sec-title">Every step we took together</h2>
+      </div>
+      <div class="timeline-container">
+        <div class="timeline-line"></div>
+        <div class="timeline-items" id="timeItems">
+          <!-- Items added via JS -->
+        </div>
+      </div>
+    </section>
     <section id="letter">
       <div class="letter-wrap">
         <div class="sec-center reveal" id="letHd">
@@ -85,6 +107,62 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- OUR SONG -->
+    <section id="song">
+      <div class="sec-center reveal" id="songHd">
+        <span class="sec-label">✦ Our Song ✦</span>
+        <h2 class="sec-title">A melody that reminds me of us</h2>
+      </div>
+      <div class="song-card reveal" id="songCard">
+        <div class="vinyl-wrap">
+          <div class="vinyl">
+            <div class="vinyl-center"></div>
+          </div>
+          <div class="vinyl-arm"></div>
+        </div>
+        <div class="song-info">
+          <h3 class="song-name">Tor Chaya (তোর ছায়া)</h3>
+          <p class="song-artist">Xefer & Pritom</p>
+          <div class="song-controls">
+            <button class="play-btn" onclick="toggleSong()" id="songPlayBtn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <audio id="special-song">
+        <source src="TOR CHAYA  তোর ছায়া  XEFER  PRITOM  Shihab Shaheen  Official Music Video  Tumi Ami Shudhu.mp3" type="audio/mpeg">
+      </audio>
+    </section>
+
+    <!-- VOICE NOTE -->
+    <section id="voice">
+      <div class="sec-center reveal" id="voiceHd">
+        <span class="sec-label">✦ A Message for You ✦</span>
+        <h2 class="sec-title">Listen to what I want to tell you</h2>
+      </div>
+      <div class="voice-card reveal" id="voiceCard">
+        <div class="voice-avatar">
+          <span>💖</span>
+        </div>
+        <div class="voice-body">
+          <div class="voice-wave" id="voiceWave">
+            <!-- Bars added via JS -->
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="voice-controls">
+            <button class="voice-play-btn" onclick="toggleVoice()" id="voicePlayBtn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <span class="voice-duration">0:45</span>
+          </div>
+        </div>
+      </div>
+      <audio id="heart-voice">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg">
+      </audio>
     </section>
 
     <!-- WHY -->
@@ -137,6 +215,21 @@
       <p>Made with every piece of my heart &mdash; just for <span>Tiya</span> 💕</p>
     </footer>
   </main>
+
+  <div id="music-control" class="music-control" onclick="toggleMusic()" aria-label="Toggle music" role="button">
+    <div class="music-bars">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <svg class="music-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 18V5l12-2v13"></path>
+      <circle cx="6" cy="18" r="3"></circle>
+      <circle cx="18" cy="16" r="3"></circle>
+    </svg>
+  </div>
+  <audio id="bg-music" loop>
+    <source src="Eto Kichu Bojho, এত কিছু বোঝো  Hridoy Khan  Apurba  Mithila  Nadia Khanom  Official Music Video.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
 
   <script src="script.js"></script>
 </body>

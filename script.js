@@ -32,12 +32,9 @@ const reasons = [
 ];
 
 const letterParagraphs = [
-  'আমার প্রিয় তিয়া,',
-  'আমি জানি আমি তোমাকে কষ্ট দিয়েছি। সত্যিই অনেক অনেক দুঃখিত আমি। আমার কারণে তুমি যে ব্যথা পেয়েছ, সেটার জন্য আমার ভেতরটা পুড়ে যায়।',
-  'তুমি আমার জীবনের সূর্যমুখী — উজ্জ্বল, উষ্ণ, এবং সম্পূর্ণ অপরিহার্য। আমাদের একসাথে গড়া প্রতিটি স্মৃতি আমার বুকে আঁকা আছে।',
-  'আমি দেখি তুমি কীভাবে ধরে রাখো, এমনকি যখন কষ্ট হয়। তোমার শক্তি, তোমার ভালোবাসা, তোমার সুন্দর মনটা — এসব দেখে আমি মুগ্ধ। আর আমি প্রতিশ্রুতি দিচ্ছি — আমি সেই মানুষ হবো যার তুমি যোগ্য।',
-  'প্লিজ আমাকে প্রতিদিন তোমাকে বেছে নেওয়ার সুযোগ দাও।',
-  'তোমাকে ভালোবাসি এই কথাগুলোর চেয়েও অনেক বেশি।',
+  'সত্যি বলতে, আমি ভেতরে ভেতরে প্রচণ্ড guilty feel করছি। আমি জানি আমার কোনো একটা আচরণ বা কথা তোমাকে কষ্ট দিয়েছে, আর সেটা মনে পড়লে আমার নিজেরই খুব খারাপ লাগছে।',
+  'তোমাকে কষ্ট দেওয়ার কোনো উদ্দেশ্যই আমার ছিল না, কিন্তু দিনশেষে ভুলটা আমারই ছিল।',
+  'আমি জানি শুধু একগাদা \'সরি\' বলে সব ঠিক করা যায় না, তবুও আমার জায়গা থেকে আমি সত্যি আন্তরিকভাবে দুঃখিত। আমাদের এই সুন্দর সম্পর্কটাতে আমি কোনো তিক্ততা রাখতে চাই না। তুমি যদি একটু সময় নিয়ে ব্যাপারটা ভেবে দেখো এবং আমাকে ক্ষমা করে দাও, খুব খুশি হবো।',
 ];
 
 // ── INITIALIZATION
@@ -65,21 +62,23 @@ function spawnPetals(container, n) {
 function enterSite() {
   const ldr = document.getElementById('loader');
   ldr.classList.add('hidden');
-  
+
   setTimeout(() => {
     ldr.style.display = 'none';
     const main = document.getElementById('main');
     main.classList.add('visible');
-    
+
     // Initialize sections after entering
     spawnPetals(document.getElementById('hPetals'), 18);
     buildGallery();
+    buildTimeline();
     buildStars();
     buildFloatingHearts();
     buildReasons();
     setDate();
     buildLetter();
     buildApologyHearts();
+    spawnFloatingLetters();
     setupObserver();
   }, 850);
 }
@@ -88,19 +87,19 @@ function enterSite() {
 function buildGallery() {
   const g = document.getElementById('polGrid');
   if (!g) return;
-  
+
   photos.forEach((ph, i) => {
     const d = document.createElement('div');
     d.className = 'polaroid';
     d.style.setProperty('--rot', rots[i % rots.length] + 'deg');
     d.style.transitionDelay = (i * 0.1) + 's';
-    
+
     d.innerHTML = `
       <img src="${ph.file}" alt="${ph.cap}" loading="lazy">
       <div class="pol-shine"></div>
       <span class="pol-cap">${ph.cap}</span>
     `;
-    
+
     d.onclick = () => openLb(ph.file);
     g.appendChild(d);
   });
@@ -125,7 +124,7 @@ function closeLb() {
 function buildStars() {
   const c = document.getElementById('starsEl');
   if (!c) return;
-  
+
   for (let i = 0; i < 130; i++) {
     const s = document.createElement('div');
     s.className = 'star';
@@ -146,8 +145,8 @@ function buildStars() {
 function buildFloatingHearts() {
   const c = document.getElementById('fhEl');
   if (!c) return;
-  
-  const h = ['♡','♥','💕','💗','💓','🌸'];
+
+  const h = ['♡', '♥', '💕', '💗', '💓', '🌸'];
   for (let i = 0; i < 18; i++) {
     const el = document.createElement('div');
     el.className = 'fheart';
@@ -167,14 +166,14 @@ function buildFloatingHearts() {
 function buildReasons() {
   const w = document.getElementById('reasonsEl');
   if (!w) return;
-  
+
   reasons.forEach((r, i) => {
     const p = document.createElement('div');
     p.className = 'reason-pill';
     p.style.transitionDelay = (i * 0.07) + 's';
     p.textContent = r;
-    p.onclick = function () { 
-      this.classList.toggle('lit'); 
+    p.onclick = function () {
+      this.classList.toggle('lit');
     };
     w.appendChild(p);
   });
@@ -185,17 +184,17 @@ function setDate() {
   const dateEl = document.getElementById('letDate');
   if (!dateEl) return;
   const d = new Date();
-  dateEl.textContent = d.toLocaleDateString('en-GB', { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
+  dateEl.textContent = d.toLocaleDateString('en-GB', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
   });
 }
 
 function buildLetter() {
   const b = document.getElementById('letBody');
   if (!b) return;
-  
+
   letterParagraphs.forEach(txt => {
     const p = document.createElement('p');
     p.textContent = txt;
@@ -208,39 +207,39 @@ function setupObserver() {
   const options = {
     threshold: 0.15
   };
-  
+
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (!e.isIntersecting) return;
-      
+
       const el = e.target;
       el.classList.add('visible');
-      
+
       if (el.id === 'envEl') {
         el.querySelectorAll('.letter-body p').forEach((p, i) => {
           setTimeout(() => p.classList.add('shown'), i * 280);
         });
       }
-      
+
       if (el.id === 'ps') {
         setTimeout(() => el.classList.add('underlined'), 100);
       }
-      
+
       io.unobserve(el);
     });
   }, options);
 
   const targets = [
-    'galHd', 'letHd', 'envEl', 'whyHd', 'whySub', 'ph', 'pp', 'ps',
+    'galHd', 'timeHd', 'letHd', 'envEl', 'songHd', 'songCard', 'voiceHd', 'voiceCard', 'whyHd', 'whySub', 'ph', 'pp', 'ps',
     'apH', 'apP', 'apBtns'
   ];
-  
+
   targets.forEach(id => {
     const el = document.getElementById(id);
     if (el) io.observe(el);
   });
-  
-  document.querySelectorAll('.polaroid, .reason-pill').forEach(el => {
+
+  document.querySelectorAll('.polaroid, .reason-pill, .timeline-item').forEach(el => {
     io.observe(el);
   });
 }
@@ -249,7 +248,7 @@ function setupObserver() {
 function buildApologyHearts() {
   const c = document.getElementById('apbgEl');
   if (!c) return;
-  const symbols = ['💕','💗','🌸','✨','🌺','💝'];
+  const symbols = ['💕', '💗', '🌸', '✨', '🌺', '💝'];
   for (let i = 0; i < 24; i++) {
     const el = document.createElement('div');
     el.className = 'ap-bg-heart';
@@ -354,10 +353,28 @@ function handleYes() {
 
   // Burst of hearts
   burstHearts();
+  spawnConfetti();
+}
+
+function spawnConfetti() {
+  const colors = ['#FF8FAB', '#FFB6C1', '#DB2777', '#F472B6', '#FFF'];
+  for (let i = 0; i < 100; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.width = Math.random() * 10 + 5 + 'px';
+    c.style.height = c.style.width;
+    c.style.opacity = Math.random();
+    c.style.animationDuration = Math.random() * 2 + 3 + 's';
+    c.style.animationDelay = Math.random() * 2 + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 5000);
+  }
 }
 
 function burstHearts() {
-  const symbols = ['💕','💗','🌸','🎉','💝','✨','🌺','🌻'];
+  const symbols = ['💕', '💗', '🌸', '🎉', '💝', '✨', '🌺', '🌻'];
   for (let i = 0; i < 30; i++) {
     setTimeout(() => {
       const el = document.createElement('div');
@@ -376,5 +393,199 @@ function burstHearts() {
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 1300);
     }, i * 40);
+  }
+}
+
+// ── TOGGLE MUSIC
+function toggleMusic() {
+  const audio = document.getElementById('bg-music');
+  const control = document.getElementById('music-control');
+  if (!audio || !control) return;
+
+  if (audio.paused) {
+    audio.play().catch(err => console.log("Music play blocked:", err));
+    control.classList.add('playing');
+  } else {
+    audio.pause();
+    control.classList.remove('playing');
+  }
+}
+
+// ── CUSTOM CURSOR & SPARKLES
+(function setupCustomCursor() {
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const cursor = document.getElementById('cursor');
+    let lastTime = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+
+      // Sparkles
+      const now = Date.now();
+      if (now - lastTime > 60) {
+        spawnSparkle(e.clientX, e.clientY);
+        lastTime = now;
+      }
+    });
+
+    // Hover effect
+    const hoverables = 'a, button, .polaroid, .reason-pill, .music-control, #lb-close, .btn-yes, .btn-no';
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest(hoverables)) {
+        cursor.classList.add('hover');
+      }
+    });
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest(hoverables)) {
+        cursor.classList.remove('hover');
+      }
+    });
+  }
+})();
+
+function spawnSparkle(x, y) {
+  const s = document.createElement('div');
+  s.className = 'sparkle';
+  const symbols = ['✨', '⭐', '💖', '🌸', '💕'];
+  s.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+  s.style.left = x + 'px';
+  s.style.top = y + 'px';
+
+  const dx = (Math.random() - 0.5) * 100;
+  const dy = (Math.random() - 0.5) * 100;
+  s.style.setProperty('--dx', dx + 'px');
+  s.style.setProperty('--dy', dy + 'px');
+
+  document.body.appendChild(s);
+  setTimeout(() => s.remove(), 1000);
+}
+
+// ── TIMELINE DATA
+const timelineData = [
+  { date: 'First Sight', title: 'The Day It All Began', desc: 'That moment I saw you, I knew my world was about to change.' },
+  { date: 'First Conversation', title: 'Endless Chats', desc: 'We could talk for hours and never get tired. Every word felt like magic.' },
+  { date: 'First Trip', title: 'Our First Adventure', desc: 'Exploring new places with you made me realize how much I love your company.' },
+  { date: 'Favorite Memory', title: 'The Quiet Moments', desc: 'Just sitting beside you, feeling complete without saying a word.' },
+];
+
+function buildTimeline() {
+  const container = document.getElementById('timeItems');
+  if (!container) return;
+
+  timelineData.forEach((item, i) => {
+    const el = document.createElement('div');
+    el.className = 'timeline-item';
+    el.innerHTML = `
+      <div class="timeline-content">
+        <span class="time-date">${item.date}</span>
+        <h3 class="time-title">${item.title}</h3>
+        <p class="time-desc">${item.desc}</p>
+      </div>
+    `;
+    container.appendChild(el);
+  });
+}
+
+// ── TOGGLE SPECIAL SONG
+function toggleSong() {
+  const audio = document.getElementById('special-song');
+  const btn = document.getElementById('songPlayBtn');
+  const vinyl = document.querySelector('.vinyl');
+  if (!audio || !btn || !vinyl) return;
+
+  if (audio.paused) {
+    // Pause ambient music if playing
+    const bgMusic = document.getElementById('bg-music');
+    const bgControl = document.getElementById('music-control');
+    if (bgMusic && !bgMusic.paused) {
+      bgMusic.pause();
+      if (bgControl) bgControl.classList.remove('playing');
+    }
+
+    audio.play().catch(err => console.log("Song play blocked:", err));
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+    vinyl.classList.add('playing');
+  } else {
+    audio.pause();
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+    vinyl.classList.remove('playing');
+  }
+}
+
+// ── FLOATING LOVE LETTERS
+const loveNotes = [
+  "You're my favorite person! 💕",
+  "I miss your smile... 🌸",
+  "You make my heart skip a beat! ✨",
+  "Always thinking of you! 💖",
+  "You are my sunshine! 🌻",
+  "I love you more than words can say! 💌"
+];
+
+function spawnFloatingLetters() {
+  setInterval(() => {
+    const l = document.createElement('div');
+    l.className = 'floating-letter';
+    l.style.left = Math.random() * 90 + 'vw';
+    l.style.animationDuration = Math.random() * 5 + 10 + 's';
+
+    l.onclick = () => {
+      openPopup(loveNotes[Math.floor(Math.random() * loveNotes.length)]);
+      l.remove();
+    };
+
+    document.body.appendChild(l);
+    setTimeout(() => l.remove(), 15000);
+  }, 4000);
+}
+
+function openPopup(text) {
+  const p = document.getElementById('letter-popup');
+  const t = document.getElementById('popup-text');
+  if (!p || !t) return;
+  t.textContent = text;
+  p.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePopup() {
+  const p = document.getElementById('letter-popup');
+  if (p) p.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── TOGGLE HEART VOICE
+function toggleVoice() {
+  const audio = document.getElementById('heart-voice');
+  const btn = document.getElementById('voicePlayBtn');
+  const card = document.getElementById('voiceCard');
+  if (!audio || !btn || !card) return;
+
+  if (audio.paused) {
+    // Pause other music if playing
+    const bgMusic = document.getElementById('bg-music');
+    const bgControl = document.getElementById('music-control');
+    if (bgMusic && !bgMusic.paused) {
+      bgMusic.pause();
+      if (bgControl) bgControl.classList.remove('playing');
+    }
+
+    const specialSong = document.getElementById('special-song');
+    const songBtn = document.getElementById('songPlayBtn');
+    const vinyl = document.querySelector('.vinyl');
+    if (specialSong && !specialSong.paused) {
+      specialSong.pause();
+      if (songBtn) songBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+      if (vinyl) vinyl.classList.remove('playing');
+    }
+
+    audio.play().catch(err => console.log("Voice play blocked:", err));
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+    card.classList.add('playing');
+  } else {
+    audio.pause();
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+    card.classList.remove('playing');
   }
 }
