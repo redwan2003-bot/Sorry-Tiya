@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For My Tiya 💕 | A Story of Love</title>
+  <meta name="description" content="A beautiful journey of memories and promises, dedicated to Tiya.">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- LOADER -->
+  <div id="loader" role="status" aria-label="Loading memory">
+    <div class="loader-petals" id="lPetals"></div>
+    <div class="heart-3d">
+      <svg viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <radialGradient id="hg" cx="45%" cy="38%" r="65%">
+            <stop offset="0%" stop-color="#FF8FAB"/>
+            <stop offset="100%" stop-color="#C2185B"/>
+          </radialGradient>
+        </defs>
+        <path d="M50 85 C50 85 5 55 5 28 C5 13 17 3 30 3 C38 3 46 7 50 14 C54 7 62 3 70 3 C83 3 95 13 95 28 C95 55 50 85 50 85Z" fill="url(#hg)"/>
+        <path d="M28 16 C22 18 16 24 16 32" stroke="rgba(255,255,255,0.3)" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+    <p class="loader-sorry">I'm Sorry, Tiya 💕</p>
+    <p class="loader-text">Before you go any further... I need you to know how much you mean to me.</p>
+    <button class="continue-btn" onclick="enterSite()" aria-label="Enter the website"><span>Enter with Love ♡</span></button>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div id="lb" onclick="if(event.target===this)closeLb()" role="dialog" aria-modal="true" aria-label="Photo Lightbox">
+    <span id="lb-close" onclick="closeLb()" aria-label="Close lightbox">&times;</span>
+    <img id="lb-img" src="" alt="Enlarged memory">
+  </div>
+
+  <!-- MAIN -->
+  <main id="main">
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-petals" id="hPetals"></div>
+      <div class="hero-content">
+        <p class="hero-tag">✦ A love story worth fighting for ✦</p>
+        <h1 class="hero-title">Our Beautiful<br><em>Journey</em></h1>
+        <p class="hero-sub">Every bump in the road brought us closer to forever. This is for you, and for us.</p>
+      </div>
+      <div class="scroll-hint" aria-hidden="true">
+        <span>Scroll</span>
+        <svg viewBox="0 0 20 30" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="1" y="1" width="18" height="28" rx="9"/>
+          <circle cx="10" cy="8" r="2.2" fill="currentColor">
+            <animateTransform attributeName="transform" type="translate" values="0 0;0 8;0 0" dur="1.5s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery">
+      <div class="sec-center reveal" id="galHd">
+        <span class="sec-label">✦ Our Memories ✦</span>
+        <h2 class="sec-title">Every moment with you is a treasure</h2>
+      </div>
+      <div class="polaroid-grid" id="polGrid"></div>
+    </section>
+
+    <!-- LETTER -->
+    <section id="letter">
+      <div class="letter-wrap">
+        <div class="sec-center reveal" id="letHd">
+          <span class="sec-label">✦ From My Heart ✦</span>
+          <h2 class="sec-title">The words I couldn't say out loud</h2>
+        </div>
+        <div class="envelope reveal" id="envEl">
+          <div class="env-lines"></div>
+          <div class="env-border"></div>
+          <div class="letter-paper">
+            <div class="letter-lines"></div>
+            <p class="letter-date" id="letDate"></p>
+            <div class="letter-body" id="letBody"></div>
+            <p class="letter-sign">Always yours, ♡</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY -->
+    <section id="why">
+      <div class="sec-center reveal" id="whyHd">
+        <span class="sec-label">✦ Why You ✦</span>
+        <h2 class="sec-title">Why you are everything to me</h2>
+      </div>
+      <p class="sec-sub reveal" id="whySub">
+        Tap each one to see why 💕
+      </p>
+      <div class="reasons-wrap" id="reasonsEl"></div>
+    </section>
+
+    <!-- PROMISE -->
+    <section id="promise">
+      <div class="stars-layer" id="starsEl"></div>
+      <div class="fhearts" id="fhEl"></div>
+      <div class="promise-inner">
+        <span class="sunflower-icon" role="img" aria-label="Sunflower">🌻</span>
+        <h2 class="promise-h reveal" id="ph">My Promise to You</h2>
+        <p class="promise-p reveal" id="pp">
+          Like a sunflower always turns to the sun, I will always turn to you.
+          I promise to be better, to love you more gently, to cherish every
+          smile you give me. You are my home, Tiya. Now and always.
+        </p>
+        <p class="promise-sign" id="ps">— Always &amp; Forever Yours 💕</p>
+      </div>
+    </section>
+
+    <footer>
+      <p>Made with every piece of my heart &mdash; just for <span>Tiya</span> 💕</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
