@@ -32,12 +32,12 @@ const reasons = [
 ];
 
 const letterParagraphs = [
-  'My dearest Tiya,',
-  'I know I\'ve hurt you, and I\'m truly, deeply sorry. There are no words big enough to hold how much I regret the pain I caused you.',
-  'You are the sunflower that came with Tiya — bright, warm, and completely irreplaceable. Every memory we\'ve built together is a treasure I hold close to my heart.',
-  'I see the way you hold on, even when it hurts. I see your strength, your kindness, your beautiful soul. And I promise you — I will be the person you deserve.',
-  'Please let me keep choosing you. Every single day.',
-  'I love you more than these words can ever say.',
+  'আমার প্রিয় তিয়া,',
+  'আমি জানি আমি তোমাকে কষ্ট দিয়েছি। সত্যিই অনেক অনেক দুঃখিত আমি। আমার কারণে তুমি যে ব্যথা পেয়েছ, সেটার জন্য আমার ভেতরটা পুড়ে যায়।',
+  'তুমি আমার জীবনের সূর্যমুখী — উজ্জ্বল, উষ্ণ, এবং সম্পূর্ণ অপরিহার্য। আমাদের একসাথে গড়া প্রতিটি স্মৃতি আমার বুকে আঁকা আছে।',
+  'আমি দেখি তুমি কীভাবে ধরে রাখো, এমনকি যখন কষ্ট হয়। তোমার শক্তি, তোমার ভালোবাসা, তোমার সুন্দর মনটা — এসব দেখে আমি মুগ্ধ। আর আমি প্রতিশ্রুতি দিচ্ছি — আমি সেই মানুষ হবো যার তুমি যোগ্য।',
+  'প্লিজ আমাকে প্রতিদিন তোমাকে বেছে নেওয়ার সুযোগ দাও।',
+  'তোমাকে ভালোবাসি এই কথাগুলোর চেয়েও অনেক বেশি।',
 ];
 
 // ── INITIALIZATION
@@ -79,6 +79,7 @@ function enterSite() {
     buildReasons();
     setDate();
     buildLetter();
+    buildApologyHearts();
     setupObserver();
   }, 850);
 }
@@ -230,7 +231,8 @@ function setupObserver() {
   }, options);
 
   const targets = [
-    'galHd', 'letHd', 'envEl', 'whyHd', 'whySub', 'ph', 'pp', 'ps'
+    'galHd', 'letHd', 'envEl', 'whyHd', 'whySub', 'ph', 'pp', 'ps',
+    'apH', 'apP', 'apBtns'
   ];
   
   targets.forEach(id => {
@@ -241,4 +243,138 @@ function setupObserver() {
   document.querySelectorAll('.polaroid, .reason-pill').forEach(el => {
     io.observe(el);
   });
+}
+
+// ── APOLOGY SECTION
+function buildApologyHearts() {
+  const c = document.getElementById('apbgEl');
+  if (!c) return;
+  const symbols = ['💕','💗','🌸','✨','🌺','💝'];
+  for (let i = 0; i < 24; i++) {
+    const el = document.createElement('div');
+    el.className = 'ap-bg-heart';
+    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    el.style.cssText = `
+      left: ${Math.random() * 100}%;
+      top: ${Math.random() * 100}%;
+      font-size: ${12 + Math.random() * 20}px;
+      animation-duration: ${6 + Math.random() * 8}s;
+      animation-delay: ${Math.random() * 6}s;
+      opacity: ${0.08 + Math.random() * 0.12};
+    `;
+    c.appendChild(el);
+  }
+}
+
+// ── RUNAWAY NO BUTTON
+(function setupRunawayNo() {
+  document.addEventListener('DOMContentLoaded', () => {
+    const noBtn = document.getElementById('btnNo');
+    if (!noBtn) return;
+
+    let attempts = 0;
+
+    function moveAway(e) {
+      attempts++;
+      const btn = noBtn.getBoundingClientRect();
+      const cx = btn.left + btn.width / 2;
+      const cy = btn.top + btn.height / 2;
+
+      // Vector from cursor to button center
+      const dx = cx - (e.clientX || e.touches?.[0]?.clientX || cx);
+      const dy = cy - (e.clientY || e.touches?.[0]?.clientY || cy);
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+      // Flee distance scales with attempts (gets more frantic)
+      const flee = Math.min(120 + attempts * 15, 280);
+
+      const nx = dx / dist * flee;
+      const ny = dy / dist * flee;
+
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      // Current position
+      const curLeft = noBtn.getBoundingClientRect().left;
+      const curTop = noBtn.getBoundingClientRect().top;
+
+      let newLeft = curLeft + nx;
+      let newTop = curTop + ny;
+
+      // Clamp to viewport
+      newLeft = Math.max(8, Math.min(vw - btn.width - 8, newLeft));
+      newTop = Math.max(8, Math.min(vh - btn.height - 8, newTop));
+
+      noBtn.style.position = 'fixed';
+      noBtn.style.left = newLeft + 'px';
+      noBtn.style.top = newTop + 'px';
+      noBtn.style.zIndex = '99999';
+      noBtn.style.margin = '0';
+
+      // Change label as she tries
+      const labels = ['না 😅', 'না না!', 'ধরো না!', 'পালাই 🏃', 'হ্যাঁ বলো!', 'না পাবে না!'];
+      noBtn.textContent = labels[Math.min(attempts - 1, labels.length - 1)];
+
+      // Grow the yes button a little to hint
+      const yesBtn = document.getElementById('btnYes');
+      if (yesBtn) {
+        const scale = Math.min(1 + attempts * 0.04, 1.5);
+        yesBtn.style.transform = `scale(${scale})`;
+      }
+    }
+
+    noBtn.addEventListener('mousemove', moveAway);
+    noBtn.addEventListener('touchstart', moveAway, { passive: true });
+    noBtn.addEventListener('click', moveAway);
+  });
+})();
+
+// ── HANDLE YES
+function handleYes() {
+  const btns = document.getElementById('apBtns');
+  const accepted = document.getElementById('apAccepted');
+  const noBtn = document.getElementById('btnNo');
+
+  // Reset no button back to normal flow
+  if (noBtn) {
+    noBtn.style.position = '';
+    noBtn.style.left = '';
+    noBtn.style.top = '';
+    noBtn.style.zIndex = '';
+  }
+
+  if (btns) {
+    btns.style.transition = 'opacity 0.5s ease';
+    btns.style.opacity = '0';
+    setTimeout(() => {
+      btns.style.display = 'none';
+      if (accepted) accepted.classList.remove('hidden');
+    }, 500);
+  }
+
+  // Burst of hearts
+  burstHearts();
+}
+
+function burstHearts() {
+  const symbols = ['💕','💗','🌸','🎉','💝','✨','🌺','🌻'];
+  for (let i = 0; i < 30; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      el.style.cssText = `
+        position: fixed;
+        left: ${20 + Math.random() * 60}%;
+        top: ${20 + Math.random() * 60}%;
+        font-size: ${18 + Math.random() * 24}px;
+        pointer-events: none;
+        z-index: 99999;
+        animation: burstAway 1.2s ease forwards;
+        --tx: ${(Math.random() - 0.5) * 300}px;
+        --ty: ${(Math.random() - 0.5) * 300}px;
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1300);
+    }, i * 40);
+  }
 }
